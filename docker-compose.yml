@@ -1,0 +1,12 @@
+services:
+  mongodb:
+    image: mongo:8.2.3-noble
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: auchan-tech-test
+    volumes:
+      - mongodb-data:/data
+volumes:
+  mongodb-data: {}
