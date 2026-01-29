@@ -3,6 +3,7 @@ package technical.test.renderer.facades;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import technical.test.renderer.services.FlightService;
+import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
 @Component
@@ -14,7 +15,7 @@ public class FlightFacade {
         this.flightService = flightService;
     }
 
-    public Flux<FlightViewModel> getFlights() {
-        return this.flightService.getFlights();
+    public Flux<FlightViewModel> getFlights(FlightFilterViewModel flightFilterViewModel) {
+        return this.flightService.getFlights(flightFilterViewModel);
     }
 }

@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import technical.test.renderer.builder.QueryParamBuilder;
 import technical.test.renderer.properties.TechnicalApiProperties;
+import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
 @Component
@@ -16,13 +18,26 @@ public class TechnicalApiClient {
 
     public TechnicalApiClient(TechnicalApiProperties technicalApiProperties, final WebClient.Builder webClientBuilder) {
         this.technicalApiProperties = technicalApiProperties;
-        this.webClient = webClientBuilder.build();
+        this.webClient = webClientBuilder
+                .baseUrl(technicalApiProperties.getUrl())
+                .build();
     }
 
-    public Flux<FlightViewModel> getFlights() {
+    public Flux<FlightViewModel> getFlights(FlightFilterViewModel flightFilterViewModel) {
         return webClient
                 .get()
-                .uri(technicalApiProperties.getUrl() + technicalApiProperties.getFlightPath())
+                .uri(uriBuilder ->
+                        QueryParamBuilder.from(uriBuilder)
+                                .path(technicalApiProperties.getFlightPath())
+                                .addIfNotNull("minPrice", flightFilterViewModel.getMinPrice())
+                                .addIfNotNull("maxPrice", flightFilterViewModel.getMaxPrice())
+                                .addIfNotBlank("origin", flightFilterViewModel.getOrigin())
+                                .addIfNotBlank("destination", flightFilterViewModel.getDestination())
+                                .addIfNotBlank("sortBy", flightFilterViewModel.getSortBy())
+                                .addIfNotBlank("sortDirection", flightFilterViewModel.getSortDirection())
+                                .addIfNotNull("page", flightFilterViewModel.getPage())
+                                .build()
+                )
                 .retrieve()
                 .bodyToFlux(FlightViewModel.class);
     }
