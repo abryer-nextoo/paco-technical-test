@@ -8,5 +8,6 @@ public record FlightFilterRepresentation(
         Optional<String> origin,
         Optional<String> destination,
         Optional<String> sortBy,
-        Optional<String> sortDirection
+        Optional<String> sortDirection,
+        Optional<Integer> page
 ) { }

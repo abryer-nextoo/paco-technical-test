@@ -8,6 +8,9 @@ spring:
 server:
   port: 8086
 
+pagination:
+  size: 6
+
 logging:
   level:
     root: INFO

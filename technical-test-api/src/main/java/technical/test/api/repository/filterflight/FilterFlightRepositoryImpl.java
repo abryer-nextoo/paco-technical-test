@@ -1,6 +1,7 @@
 package technical.test.api.repository.filterflight;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,6 +17,9 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class FilterFlightRepositoryImpl implements FilterFlightRepository {
     private final ReactiveMongoTemplate reactiveMongoTemplate;
+
+    @Value("${pagination.size}")
+    private Integer size;
 
     @Override
     public Flux<FlightRecord> findFlightsWithCriteria(FlightFilterRepresentation flightFilterRepresentation) {
@@ -45,6 +49,12 @@ public class FilterFlightRepositoryImpl implements FilterFlightRepository {
                     .orElse(Sort.Direction.ASC);
             query.with(Sort.by(direction, sortField));
         });
+
+        flightFilterRepresentation.page().ifPresent(
+                page -> query.skip((long) page * size)
+        );
+
+        query.limit(size);
 
         return reactiveMongoTemplate.find(query, FlightRecord.class);
     }
