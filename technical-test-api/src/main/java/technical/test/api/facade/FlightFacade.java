@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 import technical.test.api.mapper.AirportMapper;
 import technical.test.api.mapper.FlightMapper;
 import technical.test.api.record.FlightRecord;
+import technical.test.api.representation.FlightFilterRepresentation;
 import technical.test.api.representation.FlightRepresentation;
 import technical.test.api.services.AirportService;
 import technical.test.api.services.FlightService;
@@ -19,8 +20,8 @@ public class FlightFacade {
     private final FlightMapper flightMapper;
     private final AirportMapper airportMapper;
 
-    public Flux<FlightRepresentation> getAllFlights() {
-        return flightService.getAllFlights()
+    public Flux<FlightRepresentation> getAllFlights(FlightFilterRepresentation flightFilterRepresentation) {
+        return flightService.getAllFlights(flightFilterRepresentation)
                 .flatMap(this::toRepresentation);
     }
 
