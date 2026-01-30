@@ -2,6 +2,7 @@ package technical.test.renderer.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import reactor.core.publisher.Mono;
 import technical.test.renderer.facades.FlightFacade;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
+import technical.test.renderer.viewmodels.PageInfoViewModel;
 
 import java.util.UUID;
 
@@ -19,14 +21,33 @@ import java.util.UUID;
 public class TechnicalController {
     private final FlightFacade flightFacade;
 
+    @Value("${pagination.size}")
+    private Integer size;
+
     @GetMapping
     public Mono<String> getMarketPlaceReturnCouponPage(
             final Model model,
             @ModelAttribute FlightFilterViewModel flightFilterViewModel
     ) {
-        model.addAttribute("flights", flightFacade.getFlights(flightFilterViewModel));
-        model.addAttribute("filters", flightFilterViewModel);
-        return Mono.just("pages/index");
+        return flightFacade.getFlights(flightFilterViewModel)
+                .collectList()
+                .map(flights -> {
+                    int currentPage = flightFilterViewModel.getPage() != null ? flightFilterViewModel.getPage() : 0;
+                    boolean hasNext = flights.size() == size;
+
+                    PageInfoViewModel pageInfo = new PageInfoViewModel(
+                            currentPage,
+                            -1,
+                            flights.size(),
+                            hasNext,
+                            currentPage > 0
+                    );
+
+                    model.addAttribute("flights", flights);
+                    model.addAttribute("filters", flightFilterViewModel);
+                    model.addAttribute("pageInfo", pageInfo);
+                    return "pages/index";
+                });
     }
 
     @GetMapping("/createFlight")

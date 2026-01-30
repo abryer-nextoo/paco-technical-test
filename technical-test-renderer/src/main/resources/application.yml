@@ -5,6 +5,9 @@ spring:
 server:
   port: 8087
 
+pagination:
+  size: 6
+
 webclient:
   api:
     technical:

@@ -1,0 +1,30 @@
+<section th:fragment="pagination" class="d-flex justify-content-center mt-4">
+    <nav aria-label="Navigation de pagination">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${!pageInfo.hasPrevious} ? 'disabled'">
+                <a class="page-link pagination-link"
+                   style="cursor: pointer;"
+                   th:data-page="${pageInfo.previousPage}"
+                   th:attr="aria-disabled=${!pageInfo.hasPrevious}"
+                   aria-label="Page précédente">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item active" aria-current="page">
+                <span class="page-link"
+                      th:text="|Page ${pageInfo.currentPage + 1}|">Page 1</span>
+            </li>
+
+            <li class="page-item" th:classappend="${!pageInfo.hasNext} ? 'disabled'">
+                <a class="page-link pagination-link"
+                   style="cursor: pointer;"
+                   th:data-page="${pageInfo.nextPage}"
+                   th:attr="aria-disabled=${!pageInfo.hasNext}"
+                   aria-label="Page suivante">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>
