@@ -1,27 +1,31 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    const searchInputs = document.querySelectorAll(".search");
+/**
+ * Autocomplétion des champs aéroport : interroge l'API dès deux caractères saisis
+ * et affiche les suggestions dans une datalist associée à chaque input.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInputs = document.querySelectorAll('.search');
 
     searchInputs.forEach(input => {
-        input.addEventListener('input', function(e) {
-            const name = e.target.value;
-            const listId = this.getAttribute('list');
-            const dataList = document.getElementById(listId);
+        input.addEventListener('input', async (e) => {
+            const name = e.target.value.trim();
+            const dataList = document.getElementById(input.getAttribute('list'));
 
             if(name.length < 2) {
                 dataList.innerHTML = '';
                 return;
             }
-            fetch(`http://localhost:8086/airport/${encodeURIComponent(name)}`)
-                .then(response => response.json())
-                .then(data => {
-                    dataList.innerHTML = '';
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.iata;
-                        option.textContent = item.name+" ("+item.iata+") - "+item.country;
-                        dataList.appendChild(option);
-                    });
-                });
+
+            try {
+                const response = await fetch(`/airport/${encodeURIComponent(name)}`);
+                const airports = await response.json();
+
+                dataList.innerHTML = airports
+                    .map(airport => `<option value="${airport.iata}">${airport.name} (${airport.iata}) - ${airport.country}</option>`)
+                    .join('');
+            } catch (error) {
+                console.error('Erreur lors de la récupération des aéroports:', error);
+                dataList.innerHTML = '';
+            }
         });
     });
 });

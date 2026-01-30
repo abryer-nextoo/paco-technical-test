@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import technical.test.renderer.builder.QueryParamBuilder;
 import technical.test.renderer.properties.TechnicalApiProperties;
+import technical.test.renderer.viewmodels.AirportViewModel;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
@@ -59,5 +60,13 @@ public class TechnicalApiClient {
                 .body(Mono.just(flightViewModel), FlightViewModel.class)
                 .retrieve()
                 .bodyToMono(FlightViewModel.class);
+    }
+
+    public Flux<AirportViewModel> getAirportByNameContaining(String name) {
+        return webClient
+                .get()
+                .uri(technicalApiProperties.getAirportPath()+'/'+name)
+                .retrieve()
+                .bodyToFlux(AirportViewModel.class);
     }
 }

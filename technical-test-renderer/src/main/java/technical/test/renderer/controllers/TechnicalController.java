@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import technical.test.renderer.facades.AirportFacade;
 import technical.test.renderer.facades.FlightFacade;
+import technical.test.renderer.viewmodels.AirportViewModel;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 import technical.test.renderer.viewmodels.PageInfoViewModel;
@@ -20,6 +23,7 @@ import java.util.UUID;
 @Slf4j
 public class TechnicalController {
     private final FlightFacade flightFacade;
+    private final AirportFacade airportFacade;
 
     @Value("${pagination.size}")
     private Integer size;
@@ -76,5 +80,11 @@ public class TechnicalController {
         Mono<FlightViewModel> createFlight = flightFacade.createFlight(flightViewModel);
         model.addAttribute("flight", createFlight);
         return Mono.just("redirect:/");
+    }
+
+    @GetMapping("/airport/{name}")
+    @ResponseBody
+    public Flux<AirportViewModel> getAirportByNameContaining(@PathVariable String name) {
+        return airportFacade.getAirportByNameContaining(name);
     }
 }
