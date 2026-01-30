@@ -28,17 +28,26 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col" class="py-3">Départ de</th>
-                            <th scope="col" class="py-3">Arrivée à</th>
-                            <th scope="col" class="py-3">Prix</th>
-                            <th scope="col" class="py-3 text-center">Photo</th>
-                            <th scope="col" class="py-3">Détails</th>
+                            <th scope="col" class="py-3 text-center">Départ de</th>
+                            <th scope="col" class="py-3 text-center">Arrivée à</th>
+                            <th scope="col" class="py-3 text-center">Horaires</th>
+                            <th scope="col" class="py-3 text-center">Prix</th>
+                            <th scope="col" class="py-3 text-center w-25">Photo</th>
+                            <th scope="col" class="py-3 text-center">Détails</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="flight : ${flights}">
                             <td class="fw-semibold" th:text="|${flight.origin.name} (${flight.origin.iata})|">Départ</td>
                             <td th:text="|${flight.destination.name} (${flight.destination.iata})|">Arrivée</td>
+                            <td>
+                                <div class="small">
+                                    <strong>Départ:</strong> <span th:text="${#temporals.format(flight.departure, 'dd/MM/yyyy HH:mm')}"></span>
+                                </div>
+                                <div class="small">
+                                    <strong>Arrivée:</strong> <span th:text="${#temporals.format(flight.arrival, 'dd/MM/yyyy HH:mm')}"></span>
+                                </div>
+                            </td>
                             <td th:text="${#numbers.formatDecimal(flight.price, 1, 2)} + ' €'"></td>
                             <td class="text-center">
                                 <img th:src="${flight.image}"

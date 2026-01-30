@@ -58,7 +58,7 @@ public class DataInitializer implements CommandLineRunner {
                 AirportRecord.builder().iata("MEX").name("Mexico City International Airport").country("Mexico").build(),
                 AirportRecord.builder().iata("IST").name("Istanbul Airport").country("Turkey").build(),
                 AirportRecord.builder().iata("LIS").name("Lisbon Airport").country("Portugal").build(),
-                AirportRecord.builder().iata("SYD").name("Kuala Lumpur International Airport").country("Malaysia").build(),
+                AirportRecord.builder().iata("KUL").name("Kuala Lumpur International Airport").country("Malaysia").build(),
                 AirportRecord.builder().iata("BKK").name("Suvarnabhumi Airport").country("Thailand").build(),
                 AirportRecord.builder().iata("CPT").name("Cape Town International Airport").country("South Africa").build()
         );
