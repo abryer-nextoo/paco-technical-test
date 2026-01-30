@@ -8,6 +8,8 @@ import technical.test.api.facade.FlightFacade;
 import technical.test.api.representation.FlightFilterRepresentation;
 import technical.test.api.representation.FlightRepresentation;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/flight")
 @RequiredArgsConstructor
@@ -17,6 +19,11 @@ public class FlightEndpoint {
     @GetMapping
     public Flux<FlightRepresentation> getAllFlights(FlightFilterRepresentation flightFilterRepresentation) {
         return flightFacade.getAllFlights(flightFilterRepresentation);
+    }
+
+    @GetMapping("/{id}")
+    public Mono<FlightRepresentation> getFlightById(@PathVariable UUID id) {
+        return flightFacade.getFlightById(id);
     }
 
     @PostMapping

@@ -10,6 +10,8 @@ import technical.test.renderer.properties.TechnicalApiProperties;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
+import java.util.UUID;
+
 @Component
 @Slf4j
 public class TechnicalApiClient {
@@ -40,6 +42,14 @@ public class TechnicalApiClient {
                 )
                 .retrieve()
                 .bodyToFlux(FlightViewModel.class);
+    }
+
+    public Mono<FlightViewModel> getFlightById(UUID id) {
+        return webClient
+                .get()
+                .uri(technicalApiProperties.getFlightPath()+'/'+id)
+                .retrieve()
+                .bodyToMono(FlightViewModel.class);
     }
 
     public Mono<FlightViewModel> createFlight(FlightViewModel flightViewModel) {

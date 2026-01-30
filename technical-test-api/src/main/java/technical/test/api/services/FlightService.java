@@ -19,6 +19,10 @@ public class FlightService {
         return flightRepository.findFlightsWithCriteria(flightFilterRepresentation);
     }
 
+    public Mono<FlightRecord> getFlightById(UUID id) {
+        return flightRepository.findById(id);
+    }
+
     public Mono<FlightRecord> createFlight(FlightRecord flightRecord) {
         flightRecord.setId(UUID.randomUUID());
         return flightRepository.insert(flightRecord);

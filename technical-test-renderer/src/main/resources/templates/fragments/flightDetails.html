@@ -1,0 +1,44 @@
+<section th:fragment="flightDetails" class="card shadow-sm p-4 mb-4 bg-white rounded">
+    <div class="row">
+        <div class="col-6">
+            <label for="origin" class="form-label">De</label>
+            <input type="text" class="form-control" id="origin"
+                   th:value="|${flight.origin.name} (${flight.origin.iata}) - ${flight.origin.country}|" disabled>
+        </div>
+        <div class="col-6">
+            <label for="destination" class="form-label">Vers</label>
+            <input type="text" class="form-control" id="destination"
+                   th:value="|${flight.destination.name} (${flight.destination.iata}) - ${flight.destination.country}|" disabled>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label for="departure" class="form-label">Départ</label>
+            <input type="datetime-local" class="form-control" id="departure"
+                   th:value="${#temporals.format(flight.departure, 'yyyy-MM-dd''T''HH:mm')}" disabled />
+        </div>
+        <div class="col-6">
+            <label for="arrival" class="form-label">Arrivée</label>
+            <input type="datetime-local" class="form-control" id="arrival"
+                   th:value="${#temporals.format(flight.arrival, 'yyyy-MM-dd''T''HH:mm')}" disabled />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <label for="price" class="form-label">Prix</label>
+            <input type="text" class="form-control" id="price" th:value="${#numbers.formatDecimal(flight.price, 1, 2)} + ' €'" disabled />
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <img th:src="${flight.image}" th:alt="|Photo du vol ${flight.id}|" class="w-25">
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <a href="/" class="btn btn-secondary">Retour</a>
+    </div>
+</section>

@@ -12,6 +12,8 @@ import technical.test.api.representation.FlightRepresentation;
 import technical.test.api.services.AirportService;
 import technical.test.api.services.FlightService;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class FlightFacade {
@@ -22,6 +24,11 @@ public class FlightFacade {
 
     public Flux<FlightRepresentation> getAllFlights(FlightFilterRepresentation flightFilterRepresentation) {
         return flightService.getAllFlights(flightFilterRepresentation)
+                .flatMap(this::toRepresentation);
+    }
+
+    public Mono<FlightRepresentation> getFlightById(UUID id) {
+        return flightService.getFlightById(id)
                 .flatMap(this::toRepresentation);
     }
 

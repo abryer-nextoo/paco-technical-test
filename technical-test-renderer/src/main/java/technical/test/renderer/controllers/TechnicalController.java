@@ -10,6 +10,8 @@ import technical.test.renderer.facades.FlightFacade;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping
 @RequiredArgsConstructor
@@ -31,6 +33,16 @@ public class TechnicalController {
     public Mono<String> getCreateFlightPage(final Model model) {
         model.addAttribute("flight", new FlightViewModel());
         return Mono.just("pages/createFlight");
+    }
+
+    @GetMapping("/{id}")
+    public Mono<String> getFlightById(
+            final Model model,
+            @PathVariable UUID id
+    ) {
+        Mono<FlightViewModel> flight = flightFacade.getFlightById(id);
+        model.addAttribute("flight", flight);
+        return Mono.just("pages/flight");
     }
 
     @PostMapping
