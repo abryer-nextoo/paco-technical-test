@@ -2,14 +2,16 @@
     <form method="get" th:action="@{/}" th:object="${filters}" class="row g-3">
         <div class="row">
             <div class="col-6">
-                <label for="origin" class="form-label">Origine</label>
-                <input type="text" class="form-control" id="origin"
-                       th:field="*{origin}" placeholder="Ex: LAX">
+                <label for="origin" class="form-label">De</label>
+                <input type="text" class="form-control search" id="origin"
+                       th:field="*{origin}" list="originAirports" autocomplete="off">
+                <datalist id="originAirports"></datalist>
             </div>
             <div class="col-6">
-                <label for="destination" class="form-label">Destination</label>
-                <input type="text" class="form-control" id="destination"
-                       th:field="*{destination}" placeholder="Ex: JFK">
+                <label for="destination" class="form-label">Vers</label>
+                <input type="text" class="form-control search" id="destination"
+                       th:field="*{destination}" list="destinationAirports" autocomplete="off">
+                <datalist id="destinationAirports"></datalist>
             </div>
         </div>
 
@@ -51,4 +53,5 @@
             <a href="/" class="btn btn-secondary">Réinitialiser</a>
         </div>
     </form>
+    <script type="text/javascript" th:src="@{/scripts/autocomplete.js}" defer></script>
 </section>

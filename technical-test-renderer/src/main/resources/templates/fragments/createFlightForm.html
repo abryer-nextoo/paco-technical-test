@@ -1,0 +1,47 @@
+<section th:fragment="createFlightForm" class="card shadow-sm p-4 mb-4 bg-white rounded">
+    <form method="post" th:action="@{/}" th:object="${flight}" class="row g-3">
+        <div class="row">
+            <div class="col-6">
+                <label for="origin" class="form-label">De</label>
+                <input type="text" class="form-control search" id="origin"
+                       th:field="*{origin.iata}" list="originAirports" autocomplete="off" required>
+                <datalist id="originAirports"></datalist>
+            </div>
+            <div class="col-6">
+                <label for="destination" class="form-label">Vers</label>
+                <input type="text" class="form-control search" id="destination"
+                       th:field="*{destination.iata}" list="destinationAirports" autocomplete="off" required>
+                <datalist id="destinationAirports"></datalist>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <label for="departure" class="form-label">Départ</label>
+                <input type="datetime-local" class="form-control" id="departure" th:field="*{departure}" required />
+            </div>
+            <div class="col-6">
+                <label for="arrival" class="form-label">Arrivée</label>
+                <input type="datetime-local" class="form-control" id="arrival" th:field="*{arrival}" required />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <label for="price" class="form-label">Prix</label>
+                <input type="text" class="form-control" id="price" th:field="*{price}" required />
+            </div>
+            <div class="col-6">
+                <label for="image" class="form-label">Photo</label>
+                <input type="text" class="form-control" id="image" th:field="*{image}" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/" class="btn btn-secondary">Réinitialiser</a>
+        </div>
+    </form>
+
+    <script type="text/javascript" th:src="@{/scripts/autocomplete.js}" defer></script>
+</section>
