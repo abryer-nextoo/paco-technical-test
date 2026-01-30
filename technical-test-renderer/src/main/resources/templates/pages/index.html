@@ -48,7 +48,18 @@
                                      style="object-fit: cover;"
                                      loading="lazy"/>
                             </td>
-                            <td><a th:href="|/${flight.id}|">Voir</a></td>
+                            <td>
+                                <a th:href="@{/{id}(id=${flight.id},
+                                    origin=${filters.origin},
+                                    destination=${filters.destination},
+                                    minPrice=${filters.minPrice},
+                                    maxPrice=${filters.maxPrice},
+                                    sortBy=${filters.sortBy},
+                                    sortDirection=${filters.sortDirection},
+                                    page=${filters.page})}">
+                                    Voir
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

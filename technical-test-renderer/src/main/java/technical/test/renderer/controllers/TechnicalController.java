@@ -38,10 +38,12 @@ public class TechnicalController {
     @GetMapping("/{id}")
     public Mono<String> getFlightById(
             final Model model,
-            @PathVariable UUID id
+            @PathVariable UUID id,
+            @ModelAttribute FlightFilterViewModel flightFilterViewModel
     ) {
         Mono<FlightViewModel> flight = flightFacade.getFlightById(id);
         model.addAttribute("flight", flight);
+        model.addAttribute("filters", flightFilterViewModel);
         return Mono.just("pages/flight");
     }
 

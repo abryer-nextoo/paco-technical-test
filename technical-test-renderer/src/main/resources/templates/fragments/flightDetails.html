@@ -39,6 +39,15 @@
     </div>
 
     <div class="col-12 mt-3">
-        <a href="/" class="btn btn-secondary">Retour</a>
+        <a th:href="@{/(origin=${filters.origin},
+            destination=${filters.destination},
+            minPrice=${filters.minPrice},
+            maxPrice=${filters.maxPrice},
+            sortBy=${filters.sortBy},
+            sortDirection=${filters.sortDirection},
+            page=${filters.page})}"
+           class="btn btn-secondary">
+            Retour
+        </a>
     </div>
 </section>
