@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import technical.test.renderer.facades.AirportFacade;
 import technical.test.renderer.facades.FlightFacade;
+import technical.test.renderer.validators.FlightValidationService;
 import technical.test.renderer.viewmodels.AirportViewModel;
 import technical.test.renderer.viewmodels.FlightFilterViewModel;
 import technical.test.renderer.viewmodels.FlightViewModel;
@@ -24,6 +25,8 @@ import java.util.UUID;
 public class TechnicalController {
     private final FlightFacade flightFacade;
     private final AirportFacade airportFacade;
+
+    private final FlightValidationService flightValidationService;
 
     @Value("${pagination.size}")
     private Integer size;
@@ -77,9 +80,17 @@ public class TechnicalController {
             final Model model,
             @ModelAttribute FlightViewModel flightViewModel
     ) {
-        Mono<FlightViewModel> createFlight = flightFacade.createFlight(flightViewModel);
-        model.addAttribute("flight", createFlight);
-        return Mono.just("redirect:/");
+        return flightValidationService.validate(flightViewModel)
+                .flatMap(result -> {
+                    if (!result.isValid()) {
+                        model.addAttribute("flight", flightViewModel);
+                        model.addAttribute("fieldErrors", result.fieldErrors());
+                        return Mono.just("pages/createFlight");
+                    }
+
+                    return flightFacade.createFlight(flightViewModel)
+                            .map(created -> "redirect:/");
+                });
     }
 
     @GetMapping("/airport/{name}")

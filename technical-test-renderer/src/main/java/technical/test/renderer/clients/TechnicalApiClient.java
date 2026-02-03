@@ -69,4 +69,16 @@ public class TechnicalApiClient {
                 .retrieve()
                 .bodyToFlux(AirportViewModel.class);
     }
+
+    public Mono<AirportViewModel> getAirportByIata(String iata){
+        return webClient
+                .get()
+                .uri(uriBuilder ->
+                        QueryParamBuilder.from(uriBuilder)
+                                .path(technicalApiProperties.getAirportPath())
+                                .addIfNotNull("iata", iata)
+                                .build())
+                .retrieve()
+                .bodyToMono(AirportViewModel.class);
+    }
 }

@@ -2,34 +2,90 @@
     <form method="post" th:action="@{/}" th:object="${flight}" class="row g-3">
         <div class="row">
             <div class="col-6">
-                <label for="origin" class="form-label">De</label>
-                <input type="text" class="form-control search" id="origin"
-                       th:field="*{origin.iata}" list="originAirports" autocomplete="off" required>
+                <label for="origin" class="form-label">De <span class="text-danger">*</span></label>
+                <input type="text"
+                       class="form-control search"
+                       th:classappend="${fieldErrors != null and fieldErrors['origin.iata'] != null} ? 'is-invalid' : ''"
+                       id="origin"
+                       th:field="*{origin.iata}"
+                       list="originAirports"
+                       autocomplete="off"
+                       required>
                 <datalist id="originAirports"></datalist>
+                <div class="invalid-feedback"
+                     th:if="${fieldErrors != null and fieldErrors['origin.iata'] != null}"
+                     th:text="${fieldErrors['origin.iata']}">
+                    Erreur aéroport départ
+                </div>
             </div>
             <div class="col-6">
-                <label for="destination" class="form-label">Vers</label>
-                <input type="text" class="form-control search" id="destination"
-                       th:field="*{destination.iata}" list="destinationAirports" autocomplete="off" required>
+                <label for="destination" class="form-label">Vers <span class="text-danger">*</span></label>
+                <input type="text"
+                       class="form-control search"
+                       th:classappend="${fieldErrors != null and fieldErrors['destination.iata'] != null} ? 'is-invalid' : ''"
+                       id="destination"
+                       th:field="*{destination.iata}"
+                       list="destinationAirports"
+                       autocomplete="off"
+                       required>
                 <datalist id="destinationAirports"></datalist>
+                <div class="invalid-feedback"
+                     th:if="${fieldErrors != null and fieldErrors['destination.iata'] != null}"
+                     th:text="${fieldErrors['destination.iata']}">
+                    Erreur aéroport arrivée
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-6">
-                <label for="departure" class="form-label">Départ</label>
-                <input type="datetime-local" class="form-control" id="departure" th:field="*{departure}" required />
+                <label for="departure" class="form-label">Départ <span class="text-danger">*</span></label>
+                <input type="datetime-local"
+                       class="form-control"
+                       th:classappend="${fieldErrors != null and fieldErrors['departure'] != null} ? 'is-invalid' : ''"
+                       id="departure"
+                       name="departure"
+                       th:value="${#temporals.format(flight.departure, 'yyyy-MM-dd''T''HH:mm')}"
+                       required />
+                <div class="invalid-feedback"
+                     th:if="${fieldErrors != null and fieldErrors['departure'] != null}"
+                     th:text="${fieldErrors['departure']}">
+                    Erreur date départ
+                </div>
             </div>
             <div class="col-6">
-                <label for="arrival" class="form-label">Arrivée</label>
-                <input type="datetime-local" class="form-control" id="arrival" th:field="*{arrival}" required />
+                <label for="arrival" class="form-label">Arrivée <span class="text-danger">*</span></label>
+                <input type="datetime-local"
+                       class="form-control"
+                       th:classappend="${fieldErrors != null and fieldErrors['arrival'] != null} ? 'is-invalid' : ''"
+                       id="arrival"
+                       name="arrival"
+                       th:value="${#temporals.format(flight.arrival, 'yyyy-MM-dd''T''HH:mm')}"
+                       required />
+                <div class="invalid-feedback"
+                     th:if="${fieldErrors != null and fieldErrors['arrival'] != null}"
+                     th:text="${fieldErrors['arrival']}">
+                    Erreur date arrivée
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-6">
-                <label for="price" class="form-label">Prix</label>
-                <input type="text" class="form-control" id="price" th:field="*{price}" required />
+                <label for="price" class="form-label">Prix (€) <span class="text-danger">*</span></label>
+                <input type="number"
+                       step="0.01"
+                       min="0.01"
+                       class="form-control"
+                       th:classappend="${fieldErrors != null and fieldErrors['price'] != null} ? 'is-invalid' : ''"
+                       id="price"
+                       th:field="*{price}"
+                       required />
+                <div class="invalid-feedback"
+                     th:if="${fieldErrors != null and fieldErrors['price'] != null}"
+                     th:text="${fieldErrors['price']}">
+                    Le prix doit être supérieur à 0
+                </div>
             </div>
             <div class="col-6">
                 <label for="image" class="form-label">Photo</label>
@@ -39,7 +95,6 @@
 
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Enregistrer</button>
-            <a href="/" class="btn btn-secondary">Réinitialiser</a>
         </div>
     </form>
 
